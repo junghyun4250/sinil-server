@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "node --trace-deprecation main.js",
+    "start:node": "nodemon --max-old-space-size=4096 --trace-deprecation main.js",
     "test": "hello world"
   },
   "repository": {
@@ -28,6 +29,7 @@
     "moment-timezone": "^0.5.46",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
-    "mysql2": "^3.11.5"
+    "mysql2": "^3.11.5",
+    "nodemon": "^3.1.9"
   }
 }
