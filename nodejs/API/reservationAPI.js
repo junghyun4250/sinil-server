@@ -1,16 +1,37 @@
 const {
   reservationQuery,
   getReservationCnt,
+  getmonthData,
+  cancelReservation,
+  adminLogin,
 } = require("../../DB/Queries/reservationQueries");
 
 const reservationAPI = async (req, res) => {
-  const { resPerson, resContact, resDate, pasture, resTime, roomName } =
-    req.body;
-  console.log(
-    `resPerson:${resPerson}, resContact:${resContact}, resDate:${resDate}, pasture:${pasture}, resTime:${resTime}, roomName:${roomName}`
-  );
+  const {
+    roomCode,
+    date,
+    contactNum,
+    department,
+    departmentDescription,
+    endTime,
+    mokjang,
+    name,
+    numCnt,
+    startTime,
+  } = req.body;
 
-  var param = [resPerson, resContact, resDate, pasture, resTime, roomName];
+  var param = [
+    roomCode,
+    date,
+    contactNum,
+    department,
+    departmentDescription,
+    endTime,
+    mokjang,
+    name,
+    numCnt,
+    startTime,
+  ];
   try {
     await reservationQuery(param);
     const [count] = await getReservationCnt(param);
@@ -31,5 +52,50 @@ const reservationCntAPI = async (req, res) => {
     res.status(500).json({ error: "Error fetching data" });
   }
 };
+const monthDataAPI = async (req, res) => {
+  try {
+    const { currentYear, currentMonth, roomCode } = req.body;
+    const formattedMonth = currentMonth.padStart(2, "0"); // '03'
+    var param = [roomCode, `${currentYear}-${formattedMonth}%`];
+    const [data] = await getmonthData(param);
+    console.log("data: ", data);
+    res.json({ monthData: data });
+  } catch (err) {
+    console.error("Error fetching data: ", err);
+    res.status(500).json({ error: "Error fetching data" });
+  }
+};
+const cancelReservationAPI = async (req, res) => {
+  try {
+    const { contactNum, name, res_id } = req.body;
+    var param = [contactNum, name, res_id];
+    const [result] = await cancelReservation(param);
+    let response;
+    if (result.affectedRows === 0) {
+      response = "none";
+    }
+    res.json({ result: response });
+  } catch (err) {
+    console.error("Error fetching data: ", err);
+    res.status(500).json({ error: "Error fetching data" });
+  }
+};
+const adminLoginAPI = async (req, res) => {
+  try {
+    const { adminId, adminPassword } = req.body;
+    var param = [adminId, adminPassword];
+    const [result] = await adminLogin(param);
+    res.json({ idx: result[0].idx, id: result[0].id });
+  } catch (err) {
+    console.error("Error fetching data: ", err);
+    res.status(500).json({ error: "Error fetching data" });
+  }
+};
 
-module.exports = { reservationAPI, reservationCntAPI };
+module.exports = {
+  reservationAPI,
+  reservationCntAPI,
+  monthDataAPI,
+  cancelReservationAPI,
+  adminLoginAPI,
+};

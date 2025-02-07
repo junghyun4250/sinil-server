@@ -11,6 +11,9 @@ const dotenv = require("dotenv");
 const {
   reservationAPI,
   reservationCntAPI,
+  monthDataAPI,
+  cancelReservationAPI,
+  adminLoginAPI,
 } = require("./nodejs/API/reservationAPI.js");
 const {
   DBInfo,
@@ -49,6 +52,15 @@ app.post("/reserveRoom", (req, res) => {
 });
 app.post("/reserveRoomCnt", (req, res) => {
   reservationCntAPI(req, res);
+});
+app.post("/monthData", (req, res) => {
+  monthDataAPI(req, res);
+});
+app.post("/cancelReservation", (req, res) => {
+  cancelReservationAPI(req, res);
+});
+app.post("/adminLogin", (req, res) => {
+  adminLoginAPI(req, res);
 });
 
 http.createServer(app).listen(HTTP_PORT, IP, () => {
