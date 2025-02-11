@@ -67,10 +67,10 @@ const monthDataAPI = async (req, res) => {
 };
 const cancelReservationAPI = async (req, res) => {
   try {
-    const { contactNum, name, res_id } = req.body;
-    var param = [contactNum, name, res_id];
+    const { contactNum, name, res_id, id, idx } = req.body;
+    var param = { contactNum, name, res_id, id, idx };
     const [result] = await cancelReservation(param);
-    let response;
+    let response = "done";
     if (result.affectedRows === 0) {
       response = "none";
     }

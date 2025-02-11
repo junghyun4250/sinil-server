@@ -44,8 +44,13 @@ const cancelReservation = async (param) => {
   var insertQuery = `
   UPDATE sin_reserved_room
   SET cancel = 1
-  WHERE contactNum = ? AND name = ? AND res_id = ?;
+  WHERE contactNum = ${param.contactNum} AND name = ${param.name} AND res_id = ${param.res_id};
   `;
+  if (param.id && param.idx) {
+    insertQuery = `UPDATE sin_reserved_room
+  SET cancel = 1
+  WHERE res_id = ${param.res_id};`;
+  }
   var connection = await mysql.createConnection(dbConfig);
   const result = await connection.query(
     insertQuery,
