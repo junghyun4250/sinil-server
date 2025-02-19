@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node --trace-deprecation main.js",
     "start:node": "nodemon --max-old-space-size=4096 --trace-deprecation main.js",
+    "start:pm2": "pm2 start main.js --node-args='--trace-deprecation'",
     "test": "hello world"
   },
   "repository": {
